@@ -312,17 +312,9 @@
     [self finishDownloadWithErrorString:errorStr];
 }
 
-// Check if the account has permission to download
+// Check if the account has permission to download  <-- TÄMÄ MUUTETTU OFFLINEKSI
 - (BOOL)checkAccessWithDialog:(BOOL)show {
-    // for now
-    BOOL accessible = [BaseAuthenticator.current.authData[@"username"] hasPrefix:@"Demo."] || BaseAuthenticator.current.authData[@"xboxGamertag"] != nil;
-    if (!accessible) {
-        [self.progress cancel];
-        if (show) {
-            [self finishDownloadWithErrorString:@"Minecraft can't be legally installed when logged in with a local account. Please switch to an online account to continue."];
-        }
-    }
-    return accessible;
+    return YES;   // aina true -> local/demo tili toimii ilman virhettä
 }
 
 // Check SHA of the file
