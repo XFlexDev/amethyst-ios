@@ -32,9 +32,16 @@ jobs:
       - name: Checkout repository submodules
         run: git submodule update --init --recursive
 
+      - name: Setup Java JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
       - name: Install dependencies
         run: |
           brew install make
+          echo "/opt/homebrew/opt/make/libexec/gnubin" >> $GITHUB_PATH
           echo "/usr/local/opt/make/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Get gl4es latest commit hash
@@ -44,7 +51,7 @@ jobs:
 
       - name: Build for ${{ matrix.platform_name }}
         run: |
-          export PATH=/opt/homebrew/bin:$PATH
+          export JAVA_HOME=$JAVA_HOME_8_X64
           export SLIMMED=1
           if [ "${{ matrix.platform_name }}" == "ios" ]; then
             gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
